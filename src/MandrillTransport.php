@@ -47,7 +47,7 @@ class MandrillTransport extends Transport
                 'key' => $this->key,
                 'to' => $this->getTo($message),
                 'raw_message' => $message->toString(),
-                'async' => true,
+                'async' => false,
             ],
         ]);
 
