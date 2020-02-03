@@ -42,15 +42,28 @@ class MandrillTransport extends Transport
     {
         $this->beforeSendPerformed($message);
 
-        $this->client->request('POST', 'https://mandrillapp.com/api/1.0/messages/send-raw.json', [
+        $response = $this->client->request('POST', 'https://mandrillapp.com/api/1.0/messages/send-template.json', [
             'form_params' => [
                 'key' => $this->key,
-                'to' => $this->getTo($message),
-                'raw_message' => $message->toString(),
-                'async' => false,
+                'template_name' => 'reset-password',
+                'template_content' => '',
+                'message' => [
+                        'subject' => 'Test',
+                        'from_email' => 'support@culturalplaces.com',
+                        'from_name' => 'Test',
+                        'to' => [
+                                    [
+                                        'email' => 'zoran.culum88@gmail.com'
+                                    ]
+                            ],
+                        'attachments'=> [],
+                        'headers'=> [
+                            'Reply-To'=> ''
+                        ]
+                    ]
             ],
         ]);
-
+        dd($response->getBody()->getContents());
         $this->sendPerformed($message);
 
         return $this->numberOfRecipients($message);
